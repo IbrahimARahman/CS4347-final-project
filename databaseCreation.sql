@@ -11,6 +11,7 @@ CREATE TABLE Stadium (
 
 CREATE TABLE Team (
     TeamID INT PRIMARY KEY,
+    Sport VARCHAR(100),
     Name VARCHAR(100),
     Founded YEAR,
     City VARCHAR(100),
