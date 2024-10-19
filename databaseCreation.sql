@@ -19,13 +19,6 @@ CREATE TABLE Team (
     FOREIGN KEY (StadiumID) REFERENCES Stadium(StadiumID)
 );
 
-CREATE TABLE Player (
-    PlayerID INT PRIMARY KEY,
-    FirstName VARCHAR(100),
-    LastName VARCHAR(100),
-    Stats TEXT
-);
-
 CREATE TABLE Coach (
     CoachID INT PRIMARY KEY,
     FirstName VARCHAR(100),
@@ -59,16 +52,11 @@ CREATE TABLE Schedule (
     FOREIGN KEY (AwayTeamID) REFERENCES Team(TeamID)
 );
 
-CREATE TABLE Contract (
-    ContractID INT PRIMARY KEY,
-    PlayerID INT,
-    TeamID INT,
-    StartDate DATE,
-    EndDate DATE,
-    ContractType VARCHAR(50),
-    Salary DECIMAL(15, 2),
-    FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
-    FOREIGN KEY (TeamID) REFERENCES Team(TeamID)
+CREATE TABLE Player (
+    PlayerID INT PRIMARY KEY,
+    FirstName VARCHAR(100),
+    LastName VARCHAR(100),
+    Stats TEXT
 );
 
 -- Table for PotentialPlayer
@@ -93,6 +81,18 @@ CREATE TABLE RosteredPlayer (
     FOREIGN KEY (TeamID) REFERENCES Team(TeamID),
     FOREIGN KEY (ContractID) REFERENCES Contract(ContractID),
     PRIMARY KEY (PlayerID, TeamID)
+);
+
+CREATE TABLE Contract (
+    ContractID INT PRIMARY KEY,
+    PlayerID INT,
+    TeamID INT,
+    StartDate DATE,
+    EndDate DATE,
+    ContractType VARCHAR(50),
+    Salary DECIMAL(15, 2),
+    FOREIGN KEY (PlayerID) REFERENCES Player(PlayerID),
+    FOREIGN KEY (TeamID) REFERENCES Team(TeamID)
 );
 
 -- Populate Stadium
@@ -152,3 +152,68 @@ INSERT INTO Scout(ScoutID, ScoutName, TeamID, Experience) VALUES
 (56787, 'Corey Wilkins', 24682, 13),
 (56788, 'Denise Padilla', 24682, 10),
 (56789, 'Gwen Nixon', 24683, 7);
+
+--Populate Schedule
+INSERT INTO Schedule(GameID, StadiumID, GameDate, StartTime, EndTime, HomeTeamID, AwayTeamID, Broadcast) VALUES
+(45670, 123450, '2024-09-12', '19:00:00', '21:30:00', 24680, 24681, 'ESPN'),
+(45671, 123451, '2024-09-19', '18:00:00', '20:30:00', 24681, 24682, 'CBS Sports'),
+(45672, 123452, '2024-09-25', '17:30:00', '20:00:00', 24682, 24683, 'Fox Sports'),
+(45673, 123453, '2024-10-03', '18:30:00', '21:00:00', 24683, 24684, 'ABC'),
+(45674, 123454, '2024-10-10', '19:00:00', '21:30:00', 24684, 24685, 'NBC'),
+(45675, 123455, '2024-10-17', '16:00:00', '18:30:00', 24685, 24686, 'ESPN'),
+(45676, 123456, '2024-10-24', '18:00:00', '20:30:00', 24686, 24687, 'CBS Sports'),
+(45677, 123457, '2024-10-31', '20:00:00', '22:30:00', 24687, 24688, 'Fox Sports'),
+(45678, 123458, '2024-11-07', '17:00:00', '19:30:00', 24688, 24689, 'ABC'),
+(45679, 123459, '2024-11-14', '19:00:00', '21:30:00', 24689, 24680, 'NBC');
+
+--Populate Player
+INSERT INTO Player(PlayerID, FirstName, LastName, Stats) VALUES
+(56791, 'David', 'Johnson', 'Games Played: 30, Total Yards: 3200, Touchdowns: 28'),
+(56792, 'Michael', 'Smith', 'Games Played: 28, Total Yards: 2900, Touchdowns: 26'),
+(56793, 'Chris', 'Williams', 'Games Played: 32, Total Yards: 3500, Touchdowns: 30'),
+(56794, 'James', 'Brown', 'Games Played: 25, Total Yards: 2600, Touchdowns: 20'),
+(56795, 'Robert', 'Davis', 'Games Played: 29, Total Yards: 3100, Touchdowns: 24'),
+(56796, 'Daniel', 'Miller', 'Games Played: 27, Total Yards: 2800, Touchdowns: 23'),
+(56797, 'Joshua', 'Wilson', 'Games Played: 31, Total Yards: 3300, Touchdowns: 29'),
+(56798, 'John', 'Moore', 'Games Played: 26, Total Yards: 2700, Touchdowns: 22'),
+(56799, 'Matthew', 'Taylor', 'Games Played: 30, Total Yards: 3200, Touchdowns: 25'),
+(56800, 'Andrew', 'Anderson', 'Games Played: 28, Total Yards: 2900, Touchdowns: 27');
+
+--Populate Potential Player
+INSERT INTO PotentialPlayer(ScoutID, PlayerID, PlayerPotential, ReportDate, Strength, Weakness) VALUES
+(56780, 56791, 4.5, '2024-09-01', 'Speed and agility', 'Injury prone'),
+(56781, 56792, 4.2, '2024-09-05', 'Strength and vision', 'Low stamina'),
+(56782, 56793, 4.7, '2024-09-12', 'Tactical intelligence', 'Lacks leadership'),
+(56783, 56794, 4.3, '2024-09-18', 'Defensive skills', 'Needs better endurance'),
+(56784, 56795, 4.6, '2024-09-22', 'Footwork and balance', 'Slow starts'),
+(56785, 56796, 4.4, '2024-09-25', 'Playmaking ability', 'Short pass accuracy'),
+(56786, 56797, 4.1, '2024-10-01', 'Versatile position player', 'Lacks consistency'),
+(56787, 56798, 4.8, '2024-10-05', 'Speed and stamina', 'Poor under pressure'),
+(56788, 56799, 4.5, '2024-10-09', 'Leadership and focus', 'Weak footwork'),
+(56789, 56800, 4.9, '2024-10-14', 'Powerful strikes', 'Lacks agility');
+
+--Populate RosteredPlayer
+INSERT INTO RosteredPlayer(PlayerID, TeamID, ContractID) VALUES
+(56791, 24680, 87650),
+(56792, 24681, 87651),
+(56793, 24682, 87652),
+(56794, 24683, 87653),
+(56795, 24684, 87654),
+(56796, 24685, 87655),
+(56797, 24686, 87656),
+(56798, 24687, 87657),
+(56799, 24688, 87658),
+(56800, 24689, 87659);
+
+--Populate Contract
+INSERT INTO Contract(ContractID, PlayerID, TeamID, StartDate, EndDate, ContractType, Salary) VALUES
+(87650, 56791, 24680, '2024-05-01', '2027-04-30', 'Professional', 95000.00),
+(87651, 56792, 24681, '2024-06-01', '2026-06-01', 'Professional', 85000.00),
+(87652, 56793, 24682, '2023-04-01', '2026-04-01', 'Professional', 120000.00),
+(87653, 56794, 24683, '2024-07-01', '2025-07-01', 'Professional', 105000.00),
+(87654, 56795, 24684, '2023-08-01', '2026-08-01', 'Professional', 110000.00),
+(87655, 56796, 24685, '2024-09-01', '2026-09-01', 'Professional', 98000.00),
+(87656, 56797, 24686, '2024-10-01', '2025-10-01', 'Professional', 115000.00),
+(87657, 56798, 24687, '2023-11-01', '2026-11-01', 'Professional', 102000.00),
+(87658, 56799, 24688, '2024-12-01', '2027-12-01', 'Professional', 96000.00),
+(87659, 56800, 24689, '2023-01-01', '2026-01-01', 'Professional', 109000.00);
