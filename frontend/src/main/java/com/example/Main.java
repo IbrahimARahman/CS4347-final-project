@@ -1,5 +1,7 @@
-package com.example;
+package ethan; //this package should correspond to your maven group_id value
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import de.vandermeer.asciitable.AsciiTable;
 import de.vandermeer.asciitable.CWC_FixedWidth;
@@ -8,9 +10,10 @@ import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 class Main {
     public static void main(String[] args) throws SQLException{
         //The "Sports_Team" part must match the name of your postgres DB
-        final String jdbcString = "jdbc:postgresql://localhost:5432/sports_team"; //credentials for our DB
+        final String jdbcString = "jdbc:postgresql://localhost:5432/Sports_Team"; //credentials for our DB
         String user = ""; //postgres username
         String pass = ""; //postgres password
+        String query = ""; //QUERY statement to pass to the DB
         Connection connection; 
         Scanner s = new Scanner(System.in);
         int option = -1;
@@ -29,14 +32,25 @@ class Main {
             option = getOption(s);
             switch (option) {
                 case 1: // Query
-                    String query = ""; //QUERY statement to pass to the DB
+                    List<String> input = new ArrayList<>();
                     ResultSetMetaData rsMeta;
                     ResultSet response;
                     int colCount = -1;
                     
                     s.nextLine(); //consume extra newline
-                    System.out.print("Enter all statements assuming postgresql syntax: ");
-                    query = s.nextLine();
+                    System.out.println("Enter the posgresql query statement. Enter emptyline when finished: ");
+                    // Read input until empty line is entered
+                    while (true) {
+                        String line = s.nextLine();
+                        if (line.trim().isEmpty()) {
+                            break; // Stop reading when an empty line is encountered
+                        }
+                        input.add(line.trim()); // Add each line to the list after trimming \n
+                    }
+                    //prepare query
+                    // Combine multile input lines into a single query string, w/ space seperated lines
+                    query = String.join(" ", input);
+                    //query = s.nextLine();
                     
                     //send query to database and save response
                     response = queryDatabase(query, connection);
@@ -61,6 +75,27 @@ class Main {
                     printTable(response, rsMeta, colCount);
                     break;
                 case 2: // Insert
+                    List<String> input2 = new ArrayList<>();
+                    
+                    s.nextLine(); //eat newline
+                    System.out.println("Enter the posgresql command to perform an insert operation. Enter blank line when finished: ");
+
+                    // Read input until empty line is entered
+                    while (true) {
+                        String line = s.nextLine();
+                        if (line.trim().isEmpty()) {
+                            break; // Stop reading when an empty line is encountered
+                        }
+                        input2.add(line.trim()); // Add each line to the list after trimming \n
+                    }
+
+                    //prepare query
+                    // Combine multile input lines into a single query string, w/ space seperated lines
+                    query = String.join(" ", input2);
+                    PreparedStatement pStatement = connection.prepareStatement(query);
+                    
+                    int rowsAffected = pStatement.executeUpdate();
+                    System.out.println("Rows affected: " + rowsAffected);
                     break;
                 case 3: // Delete
                     break;
