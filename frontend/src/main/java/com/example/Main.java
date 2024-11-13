@@ -1,4 +1,4 @@
-package ethan; //this package should correspond to your maven group_id value
+package com.example; //this package should correspond to your maven group_id value
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,8 @@ class Main {
                     printTable(response, rsMeta, colCount);
                     break;
                 case 2: // Insert
-                    List<String> input2 = new ArrayList<>();
+                    generalUpdate("an insert", s, connection);
+                    /* List<String> input2 = new ArrayList<>();
                     
                     s.nextLine(); //eat newline
                     System.out.println("Enter the posgresql command to perform an insert operation. Enter blank line when finished: ");
@@ -95,11 +96,13 @@ class Main {
                     PreparedStatement pStatement = connection.prepareStatement(query);
                     
                     int rowsAffected = pStatement.executeUpdate();
-                    System.out.println("Rows affected: " + rowsAffected);
+                    System.out.println("Rows affected: " + rowsAffected); */
                     break;
                 case 3: // Delete
+                    generalUpdate("a delete", s, connection);
                     break;
                 case 4: // Update
+                    generalUpdate("an update", s, connection);
                     break;
 
                 default:
@@ -154,6 +157,30 @@ class Main {
         
         return rs;
     }
+
+    public static void generalUpdate(String msg, Scanner s, Connection connection) throws SQLException{
+        List<String> input = new ArrayList<>();
+        s.nextLine(); //eat newline
+        System.out.println("Enter the posgresql command to perform " + msg + " operation. Enter blank line when finished: ");
+
+        // Read input until empty line is entered
+        while (true) {
+            String line = s.nextLine();
+            if (line.trim().isEmpty()) {
+                break; // Stop reading when an empty line is encountered
+            }
+            input.add(line.trim()); // Add each line to the list after trimming \n
+        }
+
+        //prepare query
+        // Combine multile input lines into a single query string, w/ space seperated lines
+        String query = String.join(" ", input);
+        PreparedStatement pStatement = connection.prepareStatement(query);
+        
+        int rowsAffected = pStatement.executeUpdate();
+        System.out.println("Rows affected: " + rowsAffected);
+
+    } 
 
     //establishes connection to the database
     public static Connection createConnection(String user, String pass, String url ){
