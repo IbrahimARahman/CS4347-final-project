@@ -1,4 +1,4 @@
-package ethan; //this package should correspond to your maven group_id value
+package com.example;
 import java.sql.*;
 import java.util.Scanner;
 import de.vandermeer.asciitable.AsciiTable;
@@ -8,7 +8,7 @@ import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
 class Main {
     public static void main(String[] args) throws SQLException{
         //The "Sports_Team" part must match the name of your postgres DB
-        final String jdbcString = "jdbc:postgresql://localhost:5432/Sports_Team"; //credentials for our DB
+        final String jdbcString = "jdbc:postgresql://localhost:5432/sports_team"; //credentials for our DB
         String user = ""; //postgres username
         String pass = ""; //postgres password
         Connection connection; 
