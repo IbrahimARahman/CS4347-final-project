@@ -1,4 +1,4 @@
-# CS4347-final-project
+# CS4347-final-project Running Front End
 
 ### SETUP
 1. Download [Sports_Team_FrontEnd.zip](https://github.com/IbrahimARahman/CS4347-final-project/blob/main/Sports_Team_FrontEnd.zip)
